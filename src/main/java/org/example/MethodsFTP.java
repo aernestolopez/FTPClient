@@ -21,7 +21,10 @@ public class MethodsFTP {
         this.port = port;
     }
 
-    //conectar
+    /**
+     * Obtener la respuesta del servidor
+     * @param ftpClient
+     */
     private static void showServerReply(FTPClient ftpClient) {
         String[] replies = ftpClient.getReplyStrings();
         if (replies != null && replies.length > 0) {
@@ -31,6 +34,9 @@ public class MethodsFTP {
         }
     }
 
+    /**
+     * Metodo para conectarse al servidor
+     */
     public void conectar() {
         try {
             ftpClient.connect(server, port);
@@ -53,8 +59,10 @@ public class MethodsFTP {
         }
     }
 
+    /**
+     * Metodo para desconectarse del servidor
+     */
     public void desconectar() {
-
         try {
             System.out.println("Desconectandose del Servidor");
             ftpClient.logout();
@@ -68,15 +76,18 @@ public class MethodsFTP {
         }
     }
 
+    /**
+     * Metodo para listar los archivos
+     * @param path
+     */
     public void listFiles(String path) {
-        // lists files and directories in the current working directory
+
         FTPFile[] files = new FTPFile[0];
         try {
             files = ftpClient.listFiles(path);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        // iterates over the files and prints details for each
         DateFormat dateFormater = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
         for (FTPFile file : files) {
@@ -90,6 +101,11 @@ public class MethodsFTP {
         }
     }
 
+    /**
+     * Metodo para buscar un archivo
+     * @param busca
+     * @param path
+     */
     public void buscar(String busca, String path) {
         FTPFileFilter filter = ftpFile -> (ftpFile.getName().contains(busca));
         FTPFile[] result;
@@ -106,31 +122,28 @@ public class MethodsFTP {
         }
     }
 
-    public void descargarFile(String filename) {
+    /**
+     * Metodo para descargar un archivo
+     * @param pathRemoto
+     * @param saveDirPath
+     */
+    public void descargarFile(String pathRemoto, String saveDirPath) {
         try {
-
-            // use local passive mode to pass firewall
             ftpClient.enterLocalPassiveMode();
-
-
-            // Carpeta propia donde se guardará el archivo
-            String saveDirPath = "/home/sokas/";
-
-            //FTPUtil.downloadDirectory(ftpClient, remoteDirPath, "", saveDirPath);
-            FTPUtil.downloadSingleFile(ftpClient, filename, saveDirPath + "/" + filename);
+            FTPUtil.downloadSingleFile(ftpClient, pathRemoto, saveDirPath  + pathRemoto);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public void subir() {
+    /**
+     * Metodo para subir un archivo
+     * @param remoteDirPath
+     * @param localDirPath
+     */
+    public void subir(String remoteDirPath, String localDirPath) {
         try {
-
-            // use local passive mode to pass firewall
             ftpClient.enterLocalPassiveMode();
-            String remoteDirPath = "/cupcake.jpeg";
-            String localDirPath = "/home/sokas/Escritorio/cupcake.jpeg";
-
             FTPUtil.uploadSingleFile(ftpClient, localDirPath, remoteDirPath);
         } catch (IOException e) {
             throw new RuntimeException(e);
