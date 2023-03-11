@@ -1,6 +1,10 @@
 package sinhilos;
 import java.util.Scanner;
 
+/**
+ * Clase para probar los metodos
+ * @author ernesto
+ */
 public class Main {
 
     public static void main(String[] args) {
