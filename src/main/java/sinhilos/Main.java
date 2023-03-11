@@ -1,4 +1,4 @@
-package org.example;
+package sinhilos;
 import java.util.Scanner;
 
 public class Main {
@@ -53,11 +53,13 @@ public class Main {
                     String remoteDir=sc.next();
                     ftp.subir(remoteDir, localDir);
                     break;
-                case 6: ftp.desconectar();
+                case 6:
+                    ftp.desconectar();
                     entrar=false;
                     sc.close();
                     break;
                 default:
+                    ftp.desconectar();
                     entrar=false;
                     sc.close();
                     break;
